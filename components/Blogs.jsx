@@ -9,10 +9,10 @@ export default function Blogs({ blogs }) {
         return data.length >= 50 ? data.slice(0, 50) + "..." : data
     }
     return (
-        <div className="flex flex-wrap justify-center gap-10 py-10 px-10">
+        <div className="flex flex-wrap justify-center gap-10 py-10 px-16 sm:px-8">
             {blogs.map((data) => (
                 <Link href={`/blog/${data.id}`} key={data.id} passHref className="min-h-full">
-                    <article className="overflow-hidden rounded-lg shadow transition hover:shadow-xl max-w-sm w-[24rem]">
+                    <article className="overflow-hidden rounded-lg shadow transition hover:shadow-xl max-w-sm sm:w-[24rem] w-80">
                         <img
                             alt="Office"
                             src={data.image}

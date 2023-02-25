@@ -25,57 +25,57 @@ export default function Navbar() {
                         <nav aria-label="Site Nav">
                             <ul className="flex items-center gap-6 text-sm">
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         About
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         Careers
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         History
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         Services
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         Projects
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a
+                                    <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         Blog
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </nav>

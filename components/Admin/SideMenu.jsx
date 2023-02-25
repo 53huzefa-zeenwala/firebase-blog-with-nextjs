@@ -2,7 +2,7 @@ import { StateContext } from '@/context/stateContext'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
-import Loader from './Loader'
+import Loader from '../Loader'
 
 function SideMenu() {
     const { logout, setAlert } = useContext(StateContext)

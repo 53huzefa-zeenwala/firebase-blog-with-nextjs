@@ -2,7 +2,7 @@ import { StateContext } from "@/context/stateContext"
 import Link from "next/link"
 import { useContext, useState } from "react"
 import { useRouter } from "next/router"
-import Loader from "./Loader"
+import Loader from "../Loader"
 import axios from "axios"
 
 export default function SignUpPage() {

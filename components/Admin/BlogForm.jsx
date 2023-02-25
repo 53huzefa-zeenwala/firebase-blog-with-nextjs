@@ -3,7 +3,7 @@ import { async } from '@firebase/util'
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import 'react-quill/dist/quill.snow.css'
-import Loader from './Loader'
+import Loader from '../Loader'
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
     ssr: false,
     loading: () => <Loader />,

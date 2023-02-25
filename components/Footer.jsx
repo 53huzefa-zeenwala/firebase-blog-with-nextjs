@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import React from 'react'
 
 export default function Footer() {
     return (
         <footer aria-label="Site Footer" className="bg-gray-100">
-            <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-5xl px-4 py-10 sm:px-10 lg:px-20 sm:flex justify-between items-center">
                 <div className="flex justify-center text-teal-600 text-xl font-bold font-poppins gap-2">
                     <svg
                         className="h-8"
@@ -19,55 +20,16 @@ export default function Footer() {
                     Blog with Nextjs
                 </div>
 
-                <nav aria-label="Footer Nav" className="mt-12">
-                    <ul className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                About
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                Careers
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                History
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                Services
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                Projects
-                            </a>
-                        </li>
-
-                        <li>
-                            <a className="text-gray-700 transition hover:text-gray-700/75" href="/">
-                                Blog
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <ul className="mt-12 flex justify-center gap-6 md:gap-8">
+                <ul className="mt-8 sm:mt-0 flex justify-center gap-6 md:gap-8">
                     <li>
-                        <a
+                        <Link
+                            passHref
                             href="/"
                             rel="noreferrer"
                             target="_blank"
                             className="text-gray-700 transition hover:text-gray-700/75"
                         >
-                            <span className="sr-only">Facebook</span>
+
                             <svg
                                 className="h-6 w-6"
                                 fill="currentColor"
@@ -80,17 +42,17 @@ export default function Footer() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </li>
 
                     <li>
-                        <a
+                        <Link
+                            passHref
                             href="/"
                             rel="noreferrer"
                             target="_blank"
                             className="text-gray-700 transition hover:text-gray-700/75"
                         >
-                            <span className="sr-only">Instagram</span>
                             <svg
                                 className="h-6 w-6"
                                 fill="currentColor"
@@ -103,17 +65,17 @@ export default function Footer() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </li>
 
                     <li>
-                        <a
+                        <Link
+                            passHref
                             href="/"
                             rel="noreferrer"
                             target="_blank"
                             className="text-gray-700 transition hover:text-gray-700/75"
                         >
-                            <span className="sr-only">Twitter</span>
                             <svg
                                 className="h-6 w-6"
                                 fill="currentColor"
@@ -124,17 +86,17 @@ export default function Footer() {
                                     d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </li>
 
                     <li>
-                        <a
+                        <Link
+                            passHref
                             href="/"
                             rel="noreferrer"
                             target="_blank"
                             className="text-gray-700 transition hover:text-gray-700/75"
                         >
-                            <span className="sr-only">GitHub</span>
                             <svg
                                 className="h-6 w-6"
                                 fill="currentColor"
@@ -147,17 +109,17 @@ export default function Footer() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </li>
 
                     <li>
-                        <a
+                        <Link
+                            passHref
                             href="/"
                             rel="noreferrer"
                             target="_blank"
                             className="text-gray-700 transition hover:text-gray-700/75"
                         >
-                            <span className="sr-only">Dribbble</span>
                             <svg
                                 className="h-6 w-6"
                                 fill="currentColor"
@@ -170,7 +132,7 @@ export default function Footer() {
                                     clipRule="evenodd"
                                 />
                             </svg>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>

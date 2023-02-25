@@ -79,7 +79,6 @@ function AdminHome() {
         }
         getData()
     }, [])
-    console.log(user)
     if (pageLoading) {
 
         return (

@@ -3,7 +3,7 @@ import React from 'react'
 export default function Blog({ title, date, image, description }) {
     
     return (
-        <div className='py-12 lg:px-48 md:px-24 px-12'>
+        <div className='py-12 lg:px-48 md:px-24 px-8'>
             <div className='h-96 w-full'>
                 <img src={image} alt="" className='w-full h-full object-cover' />
             </div>

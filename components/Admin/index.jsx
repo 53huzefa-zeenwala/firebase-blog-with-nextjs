@@ -103,7 +103,7 @@ const BlogList = ({ posts }) => {
                                                     </svg>
                                                 </span>
 
-                                                <div className='overflow-hidden z-10 bg-white w-full flex'>
+                                                <div className='overflow-hidden z-10 bg-white w-full flex flex-col sm:flex-row'>
                                                     <div className="relative h-40 sm:aspect-[2] lg:aspect-[2.5] aspect-[1]">
                                                         <img
                                                             className="absolute h-full w-full object-cover"

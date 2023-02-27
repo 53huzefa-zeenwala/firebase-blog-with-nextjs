@@ -1,9 +1,14 @@
 import Link from "next/link";
 
 export default function Blogs({ blogs }) {
-    const description = (desc) => {
-        let data = desc.split('>')[1].split('<')[0]
-        return data.length >= 150 ? data.slice(0, 150) : data
+    const description = (str) => {
+        if ((str === null) || (str === '')) {
+            return '';
+        } else {
+            str = str.toString();
+        }
+        const newStr = str.replace(/(<([^>]+)>)/gi, '')
+        return newStr.length >= 150 ? newStr.slice(0, 150) + "..." : newStr
     }
     const title = (data) => {
         return data.length >= 50 ? data.slice(0, 50) + "..." : data
@@ -11,7 +16,7 @@ export default function Blogs({ blogs }) {
     return (
         <div className="flex flex-wrap justify-center gap-10 py-10 px-16 sm:px-8">
             {blogs.map((data) => (
-                <Link href={`/blog/${data.id}`} key={data.id} passHref className="min-h-full">
+                <Link href={`/blogs/${data.id}`} key={data.id} passHref className="min-h-full">
                     <article className="overflow-hidden rounded-lg shadow transition hover:shadow-xl max-w-sm sm:w-[24rem] w-80">
                         <img
                             alt="Office"

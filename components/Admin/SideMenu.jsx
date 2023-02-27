@@ -104,6 +104,20 @@ function SideMenu() {
                         </Link>
 
                         <Link
+                            style={{ background: pathname == '/admin/blogs' ? "rgb(153, 246, 228)" : '' }}
+                            href={'/admin/blogs'}
+                            className="rounded-lg px-4 py-2 text-gray-500 hover:bg-teal-100 hover:text-gray-700"
+                            passHref
+                        >
+                            <span className="flex items-center gap-2 text-sm font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 opacity-75"viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M8 8H16M8 12H16M12 16H16M3.5 12C3.5 5.5 5.5 3.5 12 3.5C18.5 3.5 20.5 5.5 20.5 12C20.5 18.5 18.5 20.5 12 20.5C5.5 20.5 3.5 18.5 3.5 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                                All Blogs </span>
+                        </Link>
+
+                        <Link
                             href={'/admin'}
                             className="rounded-lg px-4 py-2 text-gray-500 hover:bg-teal-100 hover:text-gray-700"
                         >

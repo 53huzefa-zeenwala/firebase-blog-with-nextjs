@@ -38,3 +38,7 @@
         transform: translateX(100%);
     }
 }
+
+.dragDiv:hover > .dragButton, .dragDiv:focus > .dragButton, .dragButton:hover, .dragButton:focus {
+    left: -1.5rem;
+}

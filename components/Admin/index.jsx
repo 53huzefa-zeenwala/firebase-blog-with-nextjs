@@ -1,56 +1,154 @@
 import { db } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
 import Loader from '../Loader'
 import Link from 'next/link'
 import { StateContext } from '@/context/stateContext';
 import SideMenu from './SideMenu';
 import { useRouter } from 'next/router';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import getBlogCount from '@/firebase/getBlogCount';
 
 const BlogList = ({ posts }) => {
+    const [items, setItems] = useState([])
+    const { setAlert } = useContext(StateContext)
+    const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        if (posts) setItems(posts)
+    }, [posts])
+    const update = async (index, id) => {
+        setLoading(true);
+
+        try {
+            await updateDoc(doc(db, "blog", id), { index })
+            setAlert({
+                isShow: true,
+                duration: 3000,
+                message: "Blog updated successfully.",
+                type: "success",
+            });
+        } catch (error) {
+            setAlert({
+                isShow: true,
+                duration: 3000,
+                message: error.message,
+                type: "error",
+            });
+        }
+        setLoading(false);
+    }
+    const changeIndex = (posts, redefine) => {
+        console.log(posts)
+
+        redefine.map((item => {
+            const post = posts.filter((post => post.id == item.id))[0]
+            console.log(post.index, post.id, item.index, item.id)
+            if (post.index !== item.index) {
+                update(item.index, item.id)
+            }
+        }))
+    }
     const title = (data) => {
         return data.length >= 60 ? data.slice(0, 60) + "..." : data
     }
+    const handleOnDragEnd = (result) => {
+        if (!result.destination) return;
+        const itemsCopy = [...items];
+        const [reorderedItem] = itemsCopy.splice(result.source.index, 1);
+        itemsCopy.splice(result.destination.index, 0, reorderedItem);
+        const redefine = itemsCopy.map((item, i) => {
+            return { ...item, index: i + 1 }
+        })
+        setItems(redefine);
+        changeIndex(posts, redefine)
+    };
+    function removeTags(str) {
+        if ((str === null) || (str === '')) {
+            return '';
+        } else {
+            str = str.toString();
+        }
+        const newStr = str.replace(/(<([^>]+)>)/gi, '')
+        return newStr.length >= 100 ? newStr.slice(0, 100) + "..." : newStr
+    }
     return (
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 p-10">
-            {posts.map((post) => (
-                <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden max-w-sm">
-                    <div className="relative h-40">
-                        <img
-                            className="absolute h-full w-full object-cover"
-                            src={post.image}
-                            alt={title(post.title)}
-                        />
-                    </div>
-                    <div className="p-4">
-                        <Link href={`/blog/${post.id}`} className="text-lg mb-2 text-gray-900 font-cutiveMono tracking-tighter font-semibold hover:text-teal-900 transition-colors cursor-pointer min-h-[3.5rem] block">
-                            {title(post.title)}
-                        </Link>
-                        <div className="flex justify-between items-center text-gray">
-                            <Link href={`/admin/edit/${post.id}`} passHref>
-                                <span className="text-sm font-medium text-teal-600 hover:text-teal-700 inline-flex items-center">
-                                    <svg
-                                        className="w-4 h-4 mr-1"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M17 6.99999H6.99998V17H17V6.99999ZM16 16.012V9.98799H8V16.012H16ZM6.99998 6.99999V17C6.99998 17.552 7.44798 18 7.99998 18H17C17.552 18 18 17.552 18 17V6.99999C18 6.44799 17.552 5.99999 17 5.99999H7.99998C7.44798 5.99999 6.99998 6.44799 6.99998 6.99999Z"
-                                            fill="currentColor"
-                                        />
-                                    </svg>
-                                    Edit
-                                </span>
-                            </Link>
-                            <p className="text-sm text-gray-500">{post.date}</p>
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
+        <>
+            {loading && <Loader />}
+            {items && (
+                <DragDropContext onDragEnd={handleOnDragEnd}>
+                    <Droppable droppableId="items">
+                        {(provided) => (
+                            <ul
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                                className="flex gap-8 flex-wrap p-10"
+                            >
+                                {items.map((post, i) => (
+                                    <Draggable key={post.id} draggableId={post.id} index={i} className="">
+                                        {(provided) => (
+                                            <li
+                                                {...provided.draggableProps}
+                                                ref={provided.innerRef}
+                                                // key={post.id}
+                                                className="bg-white rounded-lg shadow-xl w-full relative dragDiv flex"
+                                            >
+                                                <span {...provided.dragHandleProps} className='absolute bg-teal-100 hover:bg-teal-200 cursor-grab left-0 dragButton p-1 h-full rounded-lg rounded-r-none transition-[left] flex justify-center items-center drop-shadow-xl'>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className='w-4 h-4' viewBox="0 0 16 16" version="1.1" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                                                        <circle cy="2.5" cx="5.5" r=".75" />
+                                                        <circle cy="8" cx="5.5" r=".75" />
+                                                        <circle cy="13.5" cx="5.5" r=".75" />
+                                                        <circle cy="2.5" cx="10.4957" r=".75" />
+                                                        <circle cy="8" cx="10.4957" r=".75" />
+                                                        <circle cy="13.5" cx="10.4957" r=".75" />
+                                                    </svg>
+                                                </span>
+
+                                                <div className='overflow-hidden z-10 bg-white w-full flex'>
+                                                    <div className="relative h-40 sm:aspect-[2] lg:aspect-[2.5] aspect-[1]">
+                                                        <img
+                                                            className="absolute h-full w-full object-cover"
+                                                            src={post.image}
+                                                            alt={title(post.title)} />
+                                                    </div>
+                                                    <div className="p-4 flex flex-col justify-between">
+                                                        <Link href={`/blogs/${post.id}`} className="text-lg text-gray-900 font-cutiveMono tracking-tighter font-semibold hover:text-teal-900 transition-colors cursor-pointer block">
+                                                            {title(post.title)}
+                                                        </Link>
+                                                        <p className='hidden md:block text-base font-medium text-gray-700 py-2'>{removeTags(post.description)}</p>
+                                                        <div className="flex justify-between items-center text-gray">
+                                                            <Link href={`/admin/edit/${post.id}`} passHref>
+                                                                <span className="text-sm font-medium text-teal-600 hover:text-teal-700 inline-flex items-center">
+                                                                    <svg
+                                                                        className="w-4 h-4 mr-1"
+                                                                        viewBox="0 0 24 24"
+                                                                        fill="none"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                    >
+                                                                        <path
+                                                                            d="M17 6.99999H6.99998V17H17V6.99999ZM16 16.012V9.98799H8V16.012H16ZM6.99998 6.99999V17C6.99998 17.552 7.44798 18 7.99998 18H17C17.552 18 18 17.552 18 17V6.99999C18 6.44799 17.552 5.99999 17 5.99999H7.99998C7.44798 5.99999 6.99998 6.44799 6.99998 6.99999Z"
+                                                                            fill="currentColor" />
+                                                                    </svg>
+                                                                    Edit
+                                                                </span>
+                                                            </Link>
+                                                            <p className="text-sm text-gray-500">{post.date}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </ul>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+            )}
+        </>
     )
 }
+
 
 function AdminHome() {
     const [loading, setLoading] = useState(true)
@@ -60,9 +158,11 @@ function AdminHome() {
     const { setAlert, user, pageLoading = true } = useContext(StateContext)
     useEffect(() => {
         const getData = async () => {
+            console.log(await getBlogCount())
             try {
                 const data = []
-                const querySnapshot = await getDocs(collection(db, 'blog'));
+                const q = query(collection(db, 'blog'), orderBy('index', 'asc'))
+                const querySnapshot = await getDocs(q);
 
                 querySnapshot.forEach((doc) => {
                     data.push({

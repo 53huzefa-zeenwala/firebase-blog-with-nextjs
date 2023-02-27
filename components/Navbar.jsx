@@ -27,6 +27,14 @@ export default function Navbar() {
                                 <li>
                                     <Link
                                         className="text-gray-500 transition hover:text-gray-500/75"
+                                        href="/blogs"
+                                    >
+                                        Blog
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        className="text-gray-500 transition hover:text-gray-500/75"
                                         href="/"
                                     >
                                         About
@@ -69,14 +77,6 @@ export default function Navbar() {
                                     </Link>
                                 </li>
 
-                                <li>
-                                    <Link
-                                        className="text-gray-500 transition hover:text-gray-500/75"
-                                        href="/"
-                                    >
-                                        Blog
-                                    </Link>
-                                </li>
                             </ul>
                         </nav>
                     </div>

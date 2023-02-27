@@ -1,6 +1,7 @@
 import { StateContext } from "@/context/stateContext";
 import { db } from "@/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import getBlogCount from "@/firebase/getBlogCount";
+import { deleteField, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import Loader from "../Loader";
@@ -14,6 +15,8 @@ function UpdateBlog() {
     const [image, setImage] = useState("");
     const [loading, setLoading] = useState(true);
     const { replace, query } = useRouter();
+    const [index, setIndex] = useState()
+    const [visibleHome, setVisibleHome] = useState(false)
     const { id } = query;
     useEffect(() => {
         const getData = async () => {
@@ -26,6 +29,10 @@ function UpdateBlog() {
                 setTitle(data.title);
                 setValue(data.description);
                 setImage(data.image);
+                if (data.index) {
+                    setIndex(data.index)
+                    setVisibleHome(true)
+                }
             } catch (error) {
                 console.log(error);
                 setAlert({
@@ -43,11 +50,36 @@ function UpdateBlog() {
     const handleClick = async () => {
         setLoading(true);
         try {
-            await updateDoc(doc(db, "blog", id), {
-                title,
-                description: value,
-                image: image,
-            });
+            let data
+            if (visibleHome && index) {
+                data = {
+                    title,
+                    description: value,
+                    image,
+                    index
+                }
+            } else if (!visibleHome && index) {
+                data = {
+                    title,
+                    description: value,
+                    image,
+                    index: deleteField()
+                }
+            } else if (visibleHome && !index) {
+                data = {
+                    title,
+                    description: value,
+                    image,
+                    index: await getBlogCount() + 1
+                }
+            } else {
+                data = {
+                    title,
+                    description: value,
+                    image: image,
+                }
+            }
+            await updateDoc(doc(db, "blog", id), data);
             setAlert({
                 isShow: true,
                 duration: 3000,
@@ -100,6 +132,7 @@ function UpdateBlog() {
             </div>
         );
     }
+    console.log(index)
     return (
         <div>
             <SideMenu />
@@ -115,6 +148,8 @@ function UpdateBlog() {
                     setAlert,
                     setLoading,
                     image,
+                    visibleHome,
+                    setVisibleHome
                 }}
             />
         </div>
